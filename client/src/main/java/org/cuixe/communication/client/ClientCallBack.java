@@ -13,9 +13,11 @@ public class ClientCallBack implements Callback {
 
     @Override
     public void receive(Messaging.Message message) {
-        Messaging.Type type = message.getHeader().getType();
-        Processor processor = processors.get(type);
-        processor.processMessage(message);
+        if(message != null) {
+            Messaging.Type type = message.getHeader().getType();
+            Processor processor = processors.get(type);
+            processor.processMessage(message);
+        }
     }
 
     public void registerProcessor(Processor processor) {

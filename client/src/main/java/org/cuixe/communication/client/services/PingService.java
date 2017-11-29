@@ -25,7 +25,7 @@ public class PingService extends AbstractService implements ScheduledService {
 
     @Override
     public void execute() {
-        ping.setAttempt(attempt);
+        ping.setAttempt(++attempt);
         builder.setHeader(header);
         builder.setPingRequest(ping);
         connection.sendPingRequest(ping.build());
@@ -33,7 +33,7 @@ public class PingService extends AbstractService implements ScheduledService {
 
     @Override
     public long getPeriodTime() {
-        return 60;
+        return 1;
     }
 
     @Override

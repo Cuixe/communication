@@ -1,8 +1,8 @@
-package org.cuixe.communication.client.socket;
+package org.cuixe.communication.client.socket.observers;
 
+import org.cuixe.communication.core.Connection;
 import org.cuixe.communication.core.ServiceManager;
 
-import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,9 +16,11 @@ public class ConnectionStatusObserver implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Socket socket = (Socket) arg;
+        Connection socket = (Connection) arg;
         if(socket.isConnected()) {
             serviceManager.runAllServices();
+        } else {
+            serviceManager.stopScheduledServices();
         }
     }
 }

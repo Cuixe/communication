@@ -10,6 +10,6 @@ public abstract class AbstractService implements Service {
 
     @Override
     public String getServiceName() {
-        return null;
+        return name;
     }
 }

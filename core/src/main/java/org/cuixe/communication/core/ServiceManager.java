@@ -39,6 +39,11 @@ public class ServiceManager {
         nameServices.values().forEach(this::executeService);
     }
 
+    public void stopScheduledServices() {
+        executor.shutdownNow();
+        executor.shutdown();
+    }
+
     private void executeScheduledService(ScheduledService service) {
         executor.scheduleWithFixedDelay(service::execute, INITIAL_DELAY, service.getPeriodTime(), service.getPeriodTimeUnit());
     }
@@ -46,4 +51,6 @@ public class ServiceManager {
     private void executeService(Service service) {
         executor.schedule(service::execute, INITIAL_DELAY, TimeUnit.SECONDS);
     }
+
+
 }

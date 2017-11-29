@@ -18,5 +18,6 @@ public class PingProcessor implements Processor {
     public void processMessage(Messaging.Message message) {
         Messaging.PingResponse response = message.getPingResponse();
         logger.debug(response.toString());
+        System.out.println(response.toString());
     }
 }

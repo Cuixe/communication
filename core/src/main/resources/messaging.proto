@@ -7,11 +7,13 @@ message Message {
     Header header = 1;
     PingRequest pingRequest = 2;
     PingResponse pingResponse = 3;
+    Test test = 4;
 }
 
 enum Type {
     PING_REQUEST = 0;
     PING_RESPONSE = 1;
+    TEST = 2;
 }
 
 message Header {
@@ -25,4 +27,8 @@ message PingRequest {
 
 message PingResponse {
     int32 attempt = 2;
+}
+
+message Test {
+    int32 side = 2;
 }

@@ -17,14 +17,14 @@ public class SocketConnection extends Observable implements Connection, Runnable
     private Callback callback;
     private InputStream inputStream;
     private OutputStream outputStream;
-
+    private boolean connected = true;
     private Thread connectionStatus;
+    private boolean initialized = false;
 
     public SocketConnection(Socket socket, Callback callback) {
         this.socket = socket;
         this.callback = callback;
         connectionStatus = new Thread(this::checkStatus);
-        connectionStatus.start();
     }
 
     @Override
@@ -34,22 +34,27 @@ public class SocketConnection extends Observable implements Connection, Runnable
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("MENSAJE ENVIADO");
     }
 
     @Override
     public void run() {
         try {
-            inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
+        connectionStatus.start();
         while (true) {
             try {
+                inputStream = socket.getInputStream();
                 Messaging.Message message = Messaging.Message.parseDelimitedFrom(inputStream);
-                callback.receive(message);
+                if(message != null) {
+                    connected = true;
+                    callback.receive(message);
+                } else {
+                    connected = false;
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -58,17 +63,24 @@ public class SocketConnection extends Observable implements Connection, Runnable
     }
 
     private void checkStatus() {
-        boolean status = socket.isConnected();
+        boolean status = false;
         while(true) {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
-                if(status != socket.isConnected()) {
-                    super.notifyObservers(socket);
+                if(!initialized || status != connected) {
+                    super.setChanged();
+                    super.notifyObservers(this);
+                    status = connected;
+                    initialized = true;
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 
 }
