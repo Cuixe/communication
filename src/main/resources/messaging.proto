@@ -1,0 +1,39 @@
+syntax = "proto3";
+package org.cuixe.communication;
+
+option java_package = "org.cuixe.communication";
+option java_generic_services = true;
+
+message Message {
+    oneof Transport {
+        Request request = 1;
+        Response response = 2;
+    }
+}
+
+message Request {
+    oneof Transport {
+        PingRequest pingRequest = 1;
+    }
+}
+
+message Response {
+    oneof Transport {
+        PingResponse pingResponse = 1;
+    }
+}
+
+message Header {
+    string nickName = 1;
+    int64 sendingTime = 2;
+}
+
+message PingRequest {
+    Header header = 1;
+    int32 attempt = 2;
+}
+
+message PingResponse {
+    Header header = 1;
+    int32 attempt = 2;
+}

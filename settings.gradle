@@ -1,0 +1,6 @@
+rootProject.name = 'communication'
+include 'client'
+include 'server'
+include 'core'
+include 'server'
+
