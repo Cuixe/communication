@@ -2,7 +2,7 @@ package org.cuixe.communication.server.services;
 
 import org.cuixe.communication.core.services.AbstractService;
 import org.cuixe.communication.core.services.ScheduledService;
-import org.cuixe.communication.core.sockets.SocketConnection;
+import org.cuixe.communication.core.connection.SocketConnection;
 
 import java.util.concurrent.TimeUnit;
 

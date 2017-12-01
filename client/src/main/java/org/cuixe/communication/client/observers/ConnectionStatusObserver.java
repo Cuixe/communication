@@ -1,6 +1,6 @@
-package org.cuixe.communication.client.socket.observers;
+package org.cuixe.communication.client.observers;
 
-import org.cuixe.communication.core.Connection;
+import org.cuixe.communication.core.connection.Connection;
 import org.cuixe.communication.core.ServiceManager;
 
 import java.util.Observable;

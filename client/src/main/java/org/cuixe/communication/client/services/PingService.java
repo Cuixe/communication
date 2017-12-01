@@ -1,8 +1,9 @@
 package org.cuixe.communication.client.services;
 
-import org.cuixe.communication.client.socket.ClientConnection;
+import org.cuixe.communication.core.connection.Connection;
 import org.cuixe.communication.core.services.AbstractService;
 import org.cuixe.communication.core.services.ScheduledService;
+import org.cuixe.communication.core.utils.MessageFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,25 +11,18 @@ import static org.cuixe.communication.core.Messaging.*;
 
 public class PingService extends AbstractService implements ScheduledService {
 
-    private ClientConnection connection;
+    private Connection connection;
     private static int attempt = 0;
 
-    private Message.Builder builder = Message.newBuilder();
-    private Header.Builder header = Header.newBuilder();
-    private PingRequest.Builder ping = PingRequest.newBuilder();
-
-    public PingService(ClientConnection connection, String name) {
+    public PingService(Connection connection, String name) {
         super(name);
         this.connection = connection;
-        header.setType(Type.PING_REQUEST);
     }
 
     @Override
     public void execute() {
-        ping.setAttempt(++attempt);
-        builder.setHeader(header);
-        builder.setPingRequest(ping);
-        connection.sendPingRequest(ping.build());
+        Message message = MessageFactory.getPingRequest(attempt++);
+        connection.sendMessage(message);
     }
 
     @Override

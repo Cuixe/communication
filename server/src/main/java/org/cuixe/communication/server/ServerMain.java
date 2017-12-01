@@ -3,7 +3,7 @@ package org.cuixe.communication.server;
 import org.cuixe.communication.core.processors.Processor;
 import org.cuixe.communication.core.utils.ArgumetUtils;
 import org.cuixe.communication.server.processors.PingProcessor;
-import org.cuixe.communication.server.sockets.ServerSocket;
+import org.cuixe.communication.server.sockets.ConnectionServer;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -18,8 +18,8 @@ public class ServerMain {
         Processor pingProcessor = new PingProcessor();
         ServerCallback callback = new ServerCallback();
         callback.registerProcessor(pingProcessor);
-        ServerSocket serverSocket = new ServerSocket(port, callback);
-        serverSocket.start();
+        ConnectionServer connectionServer = new ConnectionServer(port, callback);
+        connectionServer.start();
 
     }
 }
